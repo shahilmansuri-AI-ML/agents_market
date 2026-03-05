@@ -1,0 +1,19 @@
+# Node
+node_modules
+.next
+
+# Python
+__pycache__
+*.pyc
+.env
+venv
+
+# Docker
+postgres_data
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
