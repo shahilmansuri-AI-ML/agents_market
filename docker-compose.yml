@@ -1,6 +1,6 @@
 services:
 
-  db:
+  pod2_db:
     image: postgres:15
     container_name: pod2_db
     restart: always
@@ -11,45 +11,62 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pod2_postgres_data:/var/lib/postgresql/data
       - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U admin -d agent_db" ]
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - agents_network
 
-  backend:
+  pod2_backend:
     build: ./backend
-    container_name: agetns_backend
+    container_name: pod2_backend
     depends_on:
-      db:
+      pod2_db:
         condition: service_healthy
     ports:
       - "8001:8001"
     environment:
-      DATABASE_URL: postgresql://admin:admin_123@db:5432/agent_db
-    networks:
-      - agents_network
+      DATABASE_URL: postgresql://admin:admin_123@pod2_db:5432/agent_db
+      WORKFLOW_URL: http://pod3_fastapi:8002
 
-  frontend:
+  pod2_frontend:
     build: ./frontend
-    container_name: agents_frontend
+    container_name: pod2_frontend
     depends_on:
-      - backend
+      - pod2_backend
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: http://backend:8001
-    networks:
-      - agents_network
+      NEXT_PUBLIC_API_URL: http://pod2_backend:8001
+
+  pod3_db:
+    build:
+      context: ./pod3-workflow-engine
+      dockerfile: docker/postgres/Dockerfile
+    container_name: pod3_db
+    env_file:
+      - ./pod3-workflow-engine/.env
+    ports:
+      - "5434:5432"
+    volumes:
+      - pod3_postgres_data:/var/lib/postgresql/data
+
+  pod3_fastapi:
+    build:
+      context: ./pod3-workflow-engine
+      dockerfile: docker/fastapi/Dockerfile
+    container_name: pod3_fastapi
+    depends_on:
+      - pod3_db
+    env_file:
+      - ./pod3-workflow-engine/.env
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./pod3-workflow-engine:/app
 
 volumes:
-  postgres_data:
-
-
-networks:
-  agents_network:
-    external: true
+  pod2_postgres_data:
+  pod3_postgres_data:

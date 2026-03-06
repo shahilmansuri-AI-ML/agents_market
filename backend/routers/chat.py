@@ -1,3 +1,5 @@
+import os
+import requests
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from db.database import get_db
@@ -7,6 +9,8 @@ from schemas.chat import *
 from uuid import UUID
 
 router = APIRouter(prefix="/chat", tags=["Chat"])
+
+WORKFLOW_URL = os.getenv("WORKFLOW_URL", "http://pod3_fastapi:8002")
 
 @router.post("/conversation")
 def create_conversation(payload: CreateConversation, db: Session = Depends(get_db)):
@@ -22,6 +26,8 @@ def create_conversation(payload: CreateConversation, db: Session = Depends(get_d
 
 @router.post("/message")
 def save_message(payload: MessageCreate, db: Session = Depends(get_db)):
+    
+    # 1️⃣ Save message in DB
     msg = Message(
         conversation_id=payload.conversation_id,
         role=payload.role,
@@ -29,7 +35,37 @@ def save_message(payload: MessageCreate, db: Session = Depends(get_db)):
     )
     db.add(msg)
     db.commit()
-    return {"status": "saved"}
+
+    # 2️⃣ Get conversation to know which agent to run
+    convo = db.query(Conversation).filter(
+        Conversation.id == payload.conversation_id
+    ).first()
+
+    if not convo:
+        return {"error": "Conversation not found"}
+
+    agent_id = convo.agent_id
+
+    # 3️⃣ Call Pod3 workflow engine
+    try:
+        response = requests.post(
+            f"{WORKFLOW_URL}/execute/{agent_id}",
+            json={
+                "tenant_id": convo.tenant_id,
+                "message": payload.content
+            }
+)
+
+        result = response.json()
+
+    except Exception as e:
+        result = {"error": str(e)}
+
+    # 4️⃣ Return result to frontend
+    return {
+        "status": "saved",
+        "workflow_result": result
+    }
 
 @router.get("/conversations/{tenant_id}/{agent_id}")
 def get_conversations(
