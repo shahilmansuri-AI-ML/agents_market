@@ -22,6 +22,8 @@ class SingleAgent(Base):
 
     description = Column(Text)
 
+    instruction = Column(Text, nullable=False)
+
     tool_id = Column(
         Integer,
         ForeignKey("tools.tool_id"),
