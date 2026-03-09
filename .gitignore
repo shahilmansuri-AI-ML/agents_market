@@ -10,6 +10,7 @@ venv
 
 # Docker
 postgres_data
+.dockerignore
 
 # OS
 .DS_Store
