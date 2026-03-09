@@ -8,6 +8,7 @@ class SingleAgentCreate(BaseModel):
     tenant_id: str
     name: str
     description: Optional[str] = None
+    instruction: str
     tool_id: int
 
 
