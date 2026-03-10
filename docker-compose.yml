@@ -70,3 +70,8 @@ services:
 volumes:
   pod2_postgres_data:
   pod3_postgres_data:
+
+
+networks:
+  agents_network:
+    name: agents_network

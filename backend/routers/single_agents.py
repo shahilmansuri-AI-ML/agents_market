@@ -22,6 +22,7 @@ def create_single_agent(
         tenant_id=payload.tenant_id,
         name=payload.name,
         description=payload.description,
+        instruction=payload.instruction,
         tool_id=payload.tool_id
     )
 
