@@ -1,16 +1,17 @@
 from pydantic import BaseModel
 from typing import Dict, Any
+from uuid import UUID
 
 
 class AgentNodeCreate(BaseModel):
-    id: str
+    id: UUID
     type: str
     config: Dict[str, Any]
 
 
 class AgentNodeResponse(BaseModel):
-    id: str
-    agent_version_id: str
+    id: UUID
+    agent_version_id: UUID
     type: str
     config: Dict[str, Any]
 

@@ -24,7 +24,7 @@ INSERT INTO tools (tool_name, tool_api) VALUES
 
 CREATE TABLE IF NOT EXISTS single_agents (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-tenant_id VARCHAR(150) NOT NULL,
+tenant_id UUID NOT NULL,
 name TEXT NOT NULL,
 description TEXT,
 instruction TEXT NOT NULL,
@@ -37,7 +37,7 @@ tool_id INTEGER REFERENCES tools(tool_id)
 
 CREATE TABLE IF NOT EXISTS multi_agents (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-tenant_id VARCHAR(150) NOT NULL,
+tenant_id UUID NOT NULL,
 name VARCHAR(150) NOT NULL,
 status VARCHAR(30) NOT NULL,
 tags TEXT[]
@@ -71,7 +71,7 @@ config JSONB NOT NULL
 
 CREATE TABLE IF NOT EXISTS personas (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-tenant_id VARCHAR(150) NOT NULL,
+tenant_id UUID NOT NULL,
 config_json JSONB NOT NULL
 );
 
@@ -81,7 +81,7 @@ config_json JSONB NOT NULL
 
 CREATE TABLE IF NOT EXISTS prompts (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-tenant_id VARCHAR(150) NOT NULL,
+tenant_id UUID NOT NULL,
 content TEXT NOT NULL,
 tags TEXT[]
 );
@@ -106,7 +106,7 @@ UNIQUE(multi_agent_id)
 
 CREATE TABLE IF NOT EXISTS conversations (
 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-tenant_id VARCHAR(150) NOT NULL,
+tenant_id UUID NOT NULL,
 agent_id VARCHAR,
 title TEXT DEFAULT 'New Chat',
 created_at TIMESTAMP DEFAULT NOW()

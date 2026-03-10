@@ -3,9 +3,10 @@ from uuid import UUID
 from typing import Optional
 from schemas.tool import ToolOut 
 
+
 # Create schema
 class SingleAgentCreate(BaseModel):
-    tenant_id: str
+    tenant_id: UUID
     name: str
     description: Optional[str] = None
     instruction: str
@@ -15,7 +16,7 @@ class SingleAgentCreate(BaseModel):
 # Response schema
 class SingleAgentResponse(BaseModel):
     single_agent_id: UUID = Field(alias="id")
-    tenant_id: str
+    tenant_id: UUID
     name: str
     description: Optional[str]
     tool_id: int

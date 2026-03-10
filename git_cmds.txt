@@ -8,4 +8,14 @@ git push origin main --force
 
 git pull origin main
 
+git pull neworigin main   # for shahil
+
 uvicorn main:app --reload
+
+remote add neworigin https://github.com/shahilmansuri-AI-ML/agents_market.git
+git remote -v
+
+ git push origin main #rishi repo (agent_market)
+
+ git remote remove origin #to remove origin
+ git remote -v

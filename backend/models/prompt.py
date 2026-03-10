@@ -1,14 +1,22 @@
-from sqlalchemy import Column, String, Text
-from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy import Column, Text
+from sqlalchemy.dialects.postgresql import ARRAY, UUID
 from db.database import Base
+import uuid
 
 
 class Prompt(Base):
     __tablename__ = "prompts"
 
-    id = Column(String(50), primary_key=True)
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4
+    )
 
-    tenant_id = Column(String(50), nullable=False)
+    tenant_id = Column(
+        UUID(as_uuid=True),
+        nullable=False
+    )
 
     content = Column(Text, nullable=False)
 

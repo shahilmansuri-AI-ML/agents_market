@@ -4,7 +4,7 @@ from uuid import UUID
 
 
 class MultiAgentCreate(BaseModel):
-    tenant_id: str
+    tenant_id: UUID
     name: str
     status: str
     tags: List[str] = []
@@ -12,7 +12,7 @@ class MultiAgentCreate(BaseModel):
 
 class MultiAgentResponse(BaseModel):
     id: UUID
-    tenant_id: str
+    tenant_id: UUID
     name: str
     status: str
     tags: List[str]

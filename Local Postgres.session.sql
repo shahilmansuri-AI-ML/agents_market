@@ -142,3 +142,26 @@
 -- )
 
 
+-- ALTER TABLE single_agents
+-- ALTER COLUMN tenant_id TYPE UUID
+-- USING tenant_id::uuid;
+
+-- ALTER TABLE multi_agents
+-- ALTER COLUMN tenant_id TYPE UUID
+-- USING tenant_id::uuid;
+
+-- ALTER TABLE personas
+-- ALTER COLUMN tenant_id TYPE UUID
+-- USING tenant_id::uuid;
+
+-- ALTER TABLE prompts
+-- ALTER COLUMN tenant_id TYPE UUID
+-- USING tenant_id::uuid;
+
+-- ALTER TABLE conversations
+-- ALTER COLUMN tenant_id TYPE UUID
+-- USING tenant_id::uuid;
+
+-- ALTER TABLE conversations
+-- ALTER COLUMN agent_id TYPE UUID
+-- USING agent_id::uuid;

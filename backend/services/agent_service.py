@@ -1,6 +1,7 @@
 from sqlalchemy import text
 from fastapi import HTTPException
 from utils.validators import validate_id
+from uuid import UUID
 
 def create_agent(db, payload):
     validate_id(payload.id)
@@ -49,7 +50,7 @@ def create_agent(db, payload):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-def list_agents(db, tenant_id: str):
+def list_agents(db, tenant_id: UUID):
     result = db.execute(text("""
         SELECT a.id, a.name, a.status, a.tags, MAX(v.version) AS latest_version
         FROM agents a
