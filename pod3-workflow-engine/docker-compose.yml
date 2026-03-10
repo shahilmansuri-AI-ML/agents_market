@@ -1,0 +1,41 @@
+services:
+
+  db:
+
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    container_name: pod3_db
+    env_file:
+      - .env
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - agents_network
+
+  fastapi:
+
+    build:
+      context: .
+      dockerfile: docker/fastapi/Dockerfile
+    container_name: pod3_fastapi
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/app
+    networks:
+      - agents_network
+
+volumes:
+  postgres_data:
+
+
+networks:
+  agents_network:
+    external: true
