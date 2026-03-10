@@ -134,10 +134,10 @@ export default function SingleAgentChatPage() {
       prev.map((c) =>
         c.id === convId
           ? {
-              ...c,
-              title: c.messages.length === 0 ? userText.slice(0, 30) : c.title,
-              messages: [...c.messages, userMessage],
-            }
+            ...c,
+            title: c.messages.length === 0 ? userText.slice(0, 30) : c.title,
+            messages: [...c.messages, userMessage],
+          }
           : c,
       ),
     );
@@ -147,9 +147,8 @@ export default function SingleAgentChatPage() {
     setTimeout(() => {
       const botMessage: Message = {
         role: "assistant",
-        content: `I'm ${
-          agentName || "your assistant"
-        }. How can I help you further?`,
+        content: `I'm ${agentName || "your assistant"
+          }. How can I help you further?`,
         time: getTime(),
         liked: null,
       };
@@ -239,11 +238,10 @@ export default function SingleAgentChatPage() {
               key={chat.id}
               onClick={() => setActiveConversationId(chat.id)}
               className={`group flex items-center justify-between p-2 rounded-lg cursor-pointer transition
-          ${
-            activeConversationId === chat.id
-              ? "bg-slate-100 dark:bg-zinc-900"
-              : "hover:bg-slate-50 dark:hover:bg-zinc-900/50"
-          }`}
+          ${activeConversationId === chat.id
+                  ? "bg-slate-100 dark:bg-zinc-900"
+                  : "hover:bg-slate-50 dark:hover:bg-zinc-900/50"
+                }`}
             >
               <div className="flex items-center gap-3 truncate text-sm">
                 <MessageSquare size={14} className="text-slate-400" />
@@ -308,11 +306,10 @@ export default function SingleAgentChatPage() {
 
         {/* AGENT NAME */}
         <div
-          className={`flex items-center gap-2 ${
-            !sidebarOpen
+          className={`flex items-center gap-2 ${!sidebarOpen
               ? "border-l pl-4 border-slate-200 dark:border-zinc-800"
               : ""
-          }`}
+            }`}
         >
           <Bot size={20} className="text-indigo-600" />
           <h1>{agentName || "Loading..."}</h1>
@@ -350,9 +347,8 @@ export default function SingleAgentChatPage() {
       {/* ================= SIDEBAR ================= */}
 
       <aside
-        className={`hidden md:flex flex-col border-r border-slate-200 dark:border-zinc-800 transition-all duration-300 ${
-          sidebarOpen ? "w-72" : "w-0 overflow-hidden"
-        }`}
+        className={`hidden md:flex flex-col border-r border-slate-200 dark:border-zinc-800 transition-all duration-300 ${sidebarOpen ? "w-72" : "w-0 overflow-hidden"
+          }`}
       >
         <SidebarContent />
       </aside>
@@ -372,26 +368,26 @@ export default function SingleAgentChatPage() {
 
             {(!activeConversation ||
               activeConversation.messages.length === 0) && (
-              <div className="flex flex-col items-center text-center mt-28">
-                <h1 className="text-4xl font-semibold mb-10">
-                  How can{" "}
-                  <span className="text-indigo-500">
-                    {agentName || "Assistant"}
-                  </span>{" "}
-                  help you today?
-                </h1>
+                <div className="flex flex-col items-center text-center mt-28">
+                  <h1 className="text-4xl font-semibold mb-10">
+                    How can{" "}
+                    <span className="text-indigo-500">
+                      {agentName || "Assistant"}
+                    </span>{" "}
+                    help you today?
+                  </h1>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-2xl">
-                  {[
-                    "Improve my writing",
-                    "Explain quantum physics",
-                    "Draft a professional email",
-                    "Write a code snippet",
-                  ].map((item) => (
-                    <button
-                      key={item}
-                      onClick={() => setInput(item)}
-                      className="
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-2xl">
+                    {[
+                      "Improve my writing",
+                      "Explain quantum physics",
+                      "Draft a professional email",
+                      "Write a code snippet",
+                    ].map((item) => (
+                      <button
+                        key={item}
+                        onClick={() => setInput(item)}
+                        className="
         text-left px-6 py-4 rounded-2xl
         bg-white dark:bg-[#111216]
         border border-zinc-200 dark:border-zinc-800
@@ -403,22 +399,21 @@ export default function SingleAgentChatPage() {
         active:scale-[0.98]
         transition-all duration-200
       "
-                    >
-                      {item}
-                    </button>
-                  ))}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* MESSAGES */}
 
             {activeConversation?.messages.map((msg, i) => (
               <div key={i} className="space-y-2">
                 <div
-                  className={`flex items-end gap-3 ${
-                    msg.role === "user" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`flex items-end gap-3 ${msg.role === "user" ? "justify-end" : "justify-start"
+                    }`}
                 >
                   {/* ✅ Assistant Icon */}
                   {msg.role === "assistant" && (
@@ -430,11 +425,10 @@ export default function SingleAgentChatPage() {
                   {/* ✅ Message Bubble */}
                   <div
                     className={`max-w-[70%] px-5 py-3 rounded-2xl text-sm transition-colors
-        ${
-          msg.role === "user"
-            ? "bg-indigo-600 text-white rounded-br-md"
-            : "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-bl-md"
-        }`}
+        ${msg.role === "user"
+                        ? "bg-indigo-600 text-white rounded-br-md"
+                        : "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-800 rounded-bl-md"
+                      }`}
                   >
                     {msg.content}
                   </div>

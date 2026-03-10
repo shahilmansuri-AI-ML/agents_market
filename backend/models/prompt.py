@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Text
 from sqlalchemy.dialects.postgresql import ARRAY
-from db.database import Base
+from db.base import Base
 
 
 class Prompt(Base):

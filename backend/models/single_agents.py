@@ -1,9 +1,9 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, Text
+import uuid
+from sqlalchemy import Column, String, Text, DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from db.database import Base
-import uuid
-from models.tool import Tool
+from sqlalchemy.sql import func
+from db.base import Base
 
 
 class SingleAgent(Base):
@@ -12,20 +12,29 @@ class SingleAgent(Base):
     id = Column(
         UUID(as_uuid=True),
         primary_key=True,
-        index=True,
-        default=uuid.uuid4
+        default=uuid.uuid4,
+        index=True
     )
 
-    tenant_id = Column(String(150), nullable=False)
+    tenant_id = Column(String(150), nullable=False, index=True)
 
-    name = Column(Text, nullable=False)
+    name = Column(String(200), nullable=False)
 
     description = Column(Text)
 
-    tool_id = Column(
-        Integer,
-        ForeignKey("tools.tool_id"),
-        nullable=False
-    )
+    instruction = Column(Text, nullable=False)
 
-    tool = relationship("Tool")
+    llm_model = Column(String(150), nullable=False)
+
+    temperature = Column(String(50), default="0.7")
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    # relationship with tools through mapping table
+    tools = relationship(
+        "Tool",
+        secondary="agent_tools",
+        backref="agents"
+    )

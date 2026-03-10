@@ -1,11 +1,11 @@
 import uuid
-from sqlalchemy import Column, String, JSON, ForeignKey
+from sqlalchemy import Column, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from db.base import Base
 
 
-class AgentNode(Base):
-    __tablename__ = "agent_nodes"
+class WorkflowEdge(Base):
+    __tablename__ = "workflow_edges"
 
     id = Column(
         UUID(as_uuid=True),
@@ -19,6 +19,12 @@ class AgentNode(Base):
         nullable=False
     )
 
-    node_type = Column(String(100), nullable=False)
+    source_node = Column(
+        UUID(as_uuid=True),
+        ForeignKey("agent_nodes.id")
+    )
 
-    config = Column(JSON)
+    target_node = Column(
+        UUID(as_uuid=True),
+        ForeignKey("agent_nodes.id")
+    )

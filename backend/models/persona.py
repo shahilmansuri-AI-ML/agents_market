@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import JSONB
-from db.database import Base
+from db.base import Base
 
 
 class Persona(Base):

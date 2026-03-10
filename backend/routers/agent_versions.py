@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from db.database import get_db
+from db.session import get_db
 from models.agent_version import AgentVersion
 from schemas.agent_version import AgentVersionCreate
 

@@ -2,7 +2,7 @@ import uuid
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from models.workflow import Workflow
-from db.database import get_db
+from db.session import get_db
 from schemas.workflow import WorkflowCreate
 from services import workflow_service
 

@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy import Column, String
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.types import Text
-from db.database import Base
+from db.base import Base
 
 class MultiAgent(Base):
     __tablename__ = "multi_agents"

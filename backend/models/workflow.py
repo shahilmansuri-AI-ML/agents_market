@@ -1,11 +1,11 @@
-from sqlalchemy import Column, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, JSONB
 import uuid
-from db.database import Base
+from sqlalchemy import Column, String, Text, DateTime
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.sql import func
+from db.base import Base
 
 
 class Workflow(Base):
-
     __tablename__ = "workflows"
 
     id = Column(
@@ -14,19 +14,10 @@ class Workflow(Base):
         default=uuid.uuid4
     )
 
-    multi_agent_id = Column(
-        UUID(as_uuid=True),
-        ForeignKey("multi_agents.id", ondelete="CASCADE"),
-        nullable=False,
-        unique=True
-    )
+    tenant_id = Column(String(150), nullable=False, index=True)
 
-    nodes = Column(
-        JSONB,
-        nullable=False
-    )
+    name = Column(String(200), nullable=False)
 
-    edges = Column(
-        JSONB,
-        nullable=False
-    )
+    description = Column(Text)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

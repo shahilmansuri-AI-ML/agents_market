@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from db.database import get_db
+from db.session import get_db
 from models.single_agents import SingleAgent
 from schemas.single_agents import (
     SingleAgentCreate,
