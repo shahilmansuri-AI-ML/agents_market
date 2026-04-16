@@ -1,0 +1,94 @@
+services:
+
+  db:
+    image: postgres:15
+    container_name: agents_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin_123}
+      POSTGRES_DB: ${POSTGRES_DB:-agent_db}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d agent_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - agents_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      cache_from:
+        - agents_market-main-backend:latest
+    container_name: agents_backend
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-admin_123}@db:5432/${POSTGRES_DB:-agent_db}
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      JWT_ALGORITHM: HS256
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 150
+      JWT_REFRESH_TOKEN_EXPIRE_DAYS: 7
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-phoenix.m2ai@gmail.com}
+      SMTP_PASS: ${SMTP_PASS:-vqvw wxrh icsz ezjf}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-phoenix.m2ai@gmail.com}
+      SMTP_FROM_NAME: M2AI
+      GROQ_API_KEY: ${GROQ_API_KEY}
+    volumes:
+      - ./backend/app:/app/app
+    networks:
+      - agents_network
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/app
+          target: /app/app
+          ignore:
+            - _pycache_/
+            - "*/.pyc"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      cache_from:
+        - agents_market-main-frontend:latest
+    container_name: agents_frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    networks:
+      - agents_network
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules/
+            - .next/
+            - .git/
+
+volumes:
+  postgres_data:
+
+
+networks:
+  agents_network:
+    name: agents_network

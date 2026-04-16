@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug LocalStorage</title>
+</head>
+<body>
+    <h1>LocalStorage Debug</h1>
+    <button onclick="clearAll()">Clear All LocalStorage</button>
+    <button onclick="showAll()">Show All LocalStorage</button>
+    <pre id="output"></pre>
+
+    <script>
+        function showAll() {
+            const output = document.getElementById('output');
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                data[key] = localStorage.getItem(key);
+            }
+            output.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function clearAll() {
+            localStorage.clear();
+            output.textContent = 'LocalStorage cleared!';
+        }
+
+        // Auto show on load
+        showAll();
+    </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+    "gitdoc.enabled": false,
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "Local Postgres",
+            "database": "agent_db",
+            "username": "postgres"
+        }
+    ]
+}

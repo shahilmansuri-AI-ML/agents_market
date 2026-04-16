@@ -1,0 +1,26 @@
+git add -A
+
+git commit -m ""
+
+git branch -M main
+
+git push origin main --force
+
+git pull origin main
+
+git pull neworigin main   # for shahil
+
+uvicorn main:app --reload
+
+git remote -v
+
+git remote add new_origin_name https://github.com/shahilmansuri-AI-ML/agents_market.git
+
+git push origin main # rishi repo (agent_market)
+
+git remote remove origin # To remove existing origin
+
+
+git rm --cached docker-compose.yml
+git rm --cached .env
+git rm docker-compose.yml .env                      // Merge
